@@ -1,34 +1,23 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-import './VideoPlayer';
-import VideoPlayer from './VideoPlayer';
+import React, { useState, useEffect } from 'react';
+ 
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+
+import Routes from './router/Routes';
+import "./App.css";
 
 function App() {
-  const [count, setCount] = useState(0)
 
-  const renderVideo = () => { 
-    return (
-    <>
-      <VideoPlayer/>
-    </>
-    )
-  }
+  const router = createBrowserRouter(Routes);
 
-  const renderButton = () => {
-    return (
-      <>
-       <button onClick= {(e) =>setCount(1)}> Play </button>
-    </>
-    )
-  }
-
-      if (count === 0) return renderButton(); else return renderVideo();
-    
-
-
-  
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+ 
+  return (
+       <RouterProvider router={router}>
+ 
+<div></div>
+ 
+      </RouterProvider>
+   );
 }
 
-export default App
+export default App;
