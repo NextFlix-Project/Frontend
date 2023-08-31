@@ -1,106 +1,116 @@
-import React, { useEffect, useState } from "react";
-import {
-  PaymentElement,
-  LinkAuthenticationElement,
-  useStripe,
-  useElements
-} from "@stripe/react-stripe-js";
+import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
+import { Button, Input } from "@mui/material";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { SubscriptRounded } from "@mui/icons-material";
 
-const CheckoutForm = (props) => {
+function CheckoutForm() {
+  const [subscription, setSubsription] = useState({
+    subscription: {
+      productId: null,
+    },
+    user: {
+      firstName: null,
+      lastName: null,
+      email: null,
+    },
+  });
+
   const stripe = useStripe();
   const elements = useElements();
-    console.log(props)
-
-  const [email, setEmail] = useState('');
-  const [message, setMessage] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    if (!stripe) {
-      
-      return;
-    }
+    fetch("http://127.0.0.1:8080/api/v1/subscription/getsubscription", {
+      method: "GET",
+      credentials: "include",
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setSubsription(data);
+      })
+      .catch((error) => {
+        console.error("Error:", error.message);
+      });
+  }, []);
 
-    const clientSecret = new URLSearchParams(window.location.search).get(
-      props.clientSecret
-    );
+  const confirmPayment = async (clientSecret) => {
+    const confirmPayment = await stripe.confirmCardPayment(clientSecret);
 
-    if (!clientSecret) {
-      return;
-    }
-
-    stripe.retrievePaymentIntent(clientSecret).then(({ paymentIntent }) => {
-      switch (paymentIntent.status) {
-        case "succeeded":
-        console.log(paymentIntent)  
-        setMessage("Payment succeeded!");
-          
-          break;
-        case "processing":
-          setMessage("Your payment is processing.");
-          break;
-        case "requires_payment_method":
-          setMessage("Your payment was not successful, please try again.");
-          break;
-        default:
-          setMessage("Something went wrong.");
-          break;
-      }
-    });
-  }, [stripe]);
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    if (!stripe || !elements) {
-      // Stripe.js hasn't yet loaded.
-      // Make sure to disable form submission until Stripe.js has loaded.
-      return;
-    }
-
-    setIsLoading(true);
-
-    const { error } = await stripe.confirmPayment({
-      elements,
-      confirmParams: {
-        // Make sure to change this to your payment completion page
-        return_url: window.location.origin+ "/completed",
-      },
-    });
-
-    // This point will only be reached if there is an immediate error when
-    // confirming the payment. Otherwise, your customer will be redirected to
-    // your `return_url`. For some payment methods like iDEAL, your customer will
-    // be redirected to an intermediate site first to authorize the payment, then
-    // redirected to the `return_url`.
-    if (error.type === "card_error" || error.type === "validation_error") {
-      setMessage(error.message);
+    if (confirmPayment?.error) {
+      alert(confirmPayment.error.message);
     } else {
-      setMessage("An unexpected error occurred.");
+      alert("Success! Check your email for the invoice.");
     }
+  };
+  const subscribe = async (custId) => {
+    await axios
+      .post(
+        "http://127.0.0.1:8080/api/v1/subscription/subscribe",
+        {
+          customerId: custId.stripeCustomerId,
+        },
+        {
+          withCredentials: true,
+        }
+      )
+      .then((response) => {
+        console.log(response.data);
+        confirmPayment(response.data.clientSecret);
 
-    setIsLoading(false);
+        //  if (response.status === 200) navigate("/");
+      })
+      .catch((error) => {
+        console.error("Error:", error.message);
+      });
   };
 
-  const paymentElementOptions = {
-    layout: "tabs"
-  }
-   return (
- 
-    <form id="payment-form" onSubmit={handleSubmit}>
-      <LinkAuthenticationElement
-        id="link-authentication-element"
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <PaymentElement id="payment-element" options={paymentElementOptions} />
-      <button disabled={isLoading || !stripe || !elements} id="submit">
-        <span id="button-text">
-          {isLoading ? <div className="spinner" id="spinner"></div> : "Pay now"}
-        </span>
+  const purchaseSubscription = async () => {
+    try {
+      const paymentMethod = await stripe.createPaymentMethod({
+        type: "card",
+        card: elements.getElement(CardElement),
+        billing_details: {
+          name: subscription.user.firstName + " " + subscription.user.lastName,
+          email: subscription.user.email,
+        },
+      });
+
+      const response = await axios
+        .post(
+          "http://127.0.0.1:8080/api/v1/customer/createcustomer",
+          {
+            paymentId: paymentMethod.paymentMethod.id,
+            name:
+              subscription.user.firstName + " " + subscription.user.lastName,
+            email: subscription.user.email,
+          },
+          {
+            withCredentials: true,
+          }
+        )
+        .then((response) => {
+          subscribe(response.data);
+        })
+        .catch((error) => {
+          console.error("Error:", error.message);
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  return (
+    <div>
+      <CardElement />
+      <button onClick={purchaseSubscription} disabled={!stripe}>
+        Subscribe
       </button>
-      {/* Show any error or success messages */}
-      {message && <div id="payment-message">{message}</div>}
-    </form>
+    </div>
   );
 }
 
