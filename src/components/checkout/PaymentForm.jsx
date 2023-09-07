@@ -5,6 +5,8 @@ import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import CheckoutForm from "./CheckoutForm";
 
+import './PaymentForm.css';
+
 function PaymentForm() {
   const [clientSecret, setClientSecret] = useState(null);
 
@@ -27,7 +29,6 @@ function PaymentForm() {
         return response.json();
       })
       .then((data) => {
-        console.log(data);
         options.clientSecret = data.clientSecret;
         setClientSecret(data.clientSecret);
       })
@@ -37,7 +38,7 @@ function PaymentForm() {
   }, []);
 
   return (
-    <div>
+    <div className="payment-form">
       {clientSecret && (
         <Elements options={options} stripe={stripePromise}>
           <CheckoutForm clientSecret={options.clientSecret} />

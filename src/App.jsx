@@ -1,23 +1,40 @@
-import React, { useState, useEffect } from 'react';
- 
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { ThemeProvider, createTheme } from '@mui/material/styles';
 
-import Routes from './router/Routes';
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { StyledEngineProvider } from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
+
+ import Routes from "./router/Routes";
 import "./App.css";
 
-function App() {
+const darkTheme = createTheme({
+  palette: {
+    mode: 'dark',
+  },
+});
 
+function App() {
   const router = createBrowserRouter(Routes);
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
- 
+
   return (
-       <RouterProvider router={router}>
- 
-<div></div>
- 
-      </RouterProvider>
-   );
+    <ThemeProvider theme={darkTheme}>
+   <CssBaseline />
+   <RouterProvider router={router}>
+     
+    <div className="main">
+
+
+    </div>
+     
+     
+  
+    </RouterProvider>
+    </ThemeProvider>
+
+  );
 }
 
 export default App;

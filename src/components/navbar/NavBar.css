@@ -1,0 +1,21 @@
+.navBar {
+  overflow: hidden;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+
+  height: 70px;
+  z-index: 1000;
+}
+
+.navBox {
+  flex-grow: 1;
+  width: 100%;
+}
+
+.toolBar {
+  background-color: #e50914;
+  height: 70px;
+}
+ 

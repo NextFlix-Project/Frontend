@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Link from "@mui/material/Link";
@@ -26,6 +26,20 @@ function LoginForm() {
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
+
+  useEffect(() => {
+    axios
+      .get("http://127.0.0.1:8080/api/v1/auth/authenticated", {
+        withCredentials: true,
+      })
+      .then((response) => {
+        if (response.status === 200) navigate("/");
+      })
+      .catch((error) => {
+        console.error("Error:", error.message);
+      });
+  }, []);
+
   const login = (e) => {
     e.preventDefault();
     axios
@@ -40,7 +54,6 @@ function LoginForm() {
         }
       )
       .then((response) => {
-        console.log(response.data);
         if (response.status === 200) navigate("/");
       })
       .catch((error) => {
@@ -69,8 +82,7 @@ function LoginForm() {
         flexDirection: "column",
         flexGrow: 1,
         flexBasis: 0,
-        background: "white",
-      }}
+        }}
       noValidate
       autoComplete="off"
       onSubmit={login}
@@ -88,7 +100,7 @@ function LoginForm() {
 
       <TextField
         required
-         sx={{ paddingBottom: "1ch" }}
+        sx={{ paddingBottom: "1ch" }}
         id="outlined-basic"
         label="email"
         variant="outlined"
@@ -102,7 +114,7 @@ function LoginForm() {
         }}
       />
 
-      <FormControl sx={{ paddingBottom: "1ch" }} variant="outlined">
+      <FormControl sx={{ paddingBottom: "3ch" }} variant="outlined">
         <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
         <OutlinedInput
           required
@@ -127,7 +139,7 @@ function LoginForm() {
 
       <Button
         type="submit"
-        sx={{ marginBottom: "3ch" }}
+        sx={{ marginBottom: "5ch" }}
         variant="contained"
         color="primary"
         onClick={login}
@@ -138,10 +150,8 @@ function LoginForm() {
         sx={{
           width: "35ch",
           display: "flex",
-
           flexDirection: "row",
-          background: "white",
-        }}
+         }}
       >
         <FormLabel
           id="demo-radio-buttons-group-label"

@@ -1,8 +1,8 @@
 import * as React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import Link from "@mui/material/Link";
+import EmailIcon from "@mui/icons-material/Email";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import AccountCircle from "@mui/icons-material/AccountCircle";
@@ -30,28 +30,40 @@ function RegistrationForm() {
   const handleClickShowPassword1 = () => setShowPassword1((show) => !show);
   const handleClickShowPassword2 = () => setShowPassword2((show) => !show);
 
+  useEffect(() => {
+    axios
+      .get("http://127.0.0.1:8080/api/v1/auth/authenticated", {
+        withCredentials: true,
+      })
+      .then((response) => {
+        if (response.status === 200) navigate("/");
+      })
+      .catch((error) => {
+        console.error("Error:", error.message);
+      });
+  }, []);
+
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
   const register = (e) => {
     e.preventDefault();
 
-    if (password1 !== password2)
-        return;
+    if (password1 !== password2) return;
     axios
       .post(
-        "http://127.0.0.1:8080/api/v1/auth/register",{
+        "http://127.0.0.1:8080/api/v1/auth/register",
+        {
           email: email,
           password: password1,
           firstName: firstname,
-          lastName: lastname
+          lastName: lastname,
         },
         {
           withCredentials: true,
         }
       )
       .then((response) => {
-        console.log(response.data);
         if (response.status === 200) navigate("/subscribe");
       })
       .catch((error) => {
@@ -94,8 +106,7 @@ function RegistrationForm() {
         flexDirection: "column",
         flexGrow: 1,
         flexBasis: 0,
-        background: "white",
-      }}
+       }}
       noValidate
       autoComplete="off"
       onSubmit={register}
@@ -114,7 +125,7 @@ function RegistrationForm() {
       <TextField
         required
         focused={true}
-         sx={{ paddingBottom: "1ch" }}
+        sx={{ paddingBottom: "1ch" }}
         id="outlined-basic"
         label="first name"
         variant="outlined"
@@ -127,9 +138,9 @@ function RegistrationForm() {
           ),
         }}
       />
-           <TextField
+      <TextField
         required
-         sx={{ paddingBottom: "1ch" }}
+        sx={{ paddingBottom: "1ch" }}
         id="outlined-basic"
         label="last name"
         variant="outlined"
@@ -152,7 +163,7 @@ function RegistrationForm() {
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">
-              <AccountCircle />
+              <EmailIcon />
             </InputAdornment>
           ),
         }}
@@ -204,10 +215,9 @@ function RegistrationForm() {
         />
       </FormControl>
 
-
       <Button
         type="submit"
-        sx={{ marginBottom: "3ch" }}
+        sx={{ marginTop: "5ch" }}
         variant="contained"
         color="primary"
         onClick={register}
