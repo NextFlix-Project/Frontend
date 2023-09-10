@@ -61,7 +61,7 @@ const MovieCard = (props) => {
   const handleSave = async () => {
     axios
       .put(
-        "http://127.0.0.1:8080/api/v1/admin/movie/updatemovie",
+        process.env.server_base + "/api/v1/admin/movie/updatemovie",
         {
           id: id,
           title: title,
@@ -84,7 +84,7 @@ const MovieCard = (props) => {
   const handleDelete = async () => {
     axios
       .post(
-        "http://127.0.0.1:8080/api/v1/admin/movie/deletemovie",
+        process.env.server_base + "/api/v1/admin/movie/deletemovie",
         {
           id: id,
           title: title,

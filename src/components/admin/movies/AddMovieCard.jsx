@@ -19,12 +19,11 @@ import ToastAlert from "../../toastalert/ToastAlert";
 const AddMovieCard = (props) => {
   if (props.data.movie === null) return;
 
-  const [id, setId] = useState();
   const [title, setTitle] = useState();
   const [description, setDescription] = useState();
   const [url, setURL] = useState();
   const [boxArtUrl, setBoxArtURL] = useState();
-  const [active, setActive] = useState();
+  const [active, setActive] = useState(false);
   const [releaseDate, setReleaseDate] = useState();
   const [video, setVideo] = useState();
   const [image, setImage] = useState();
@@ -84,26 +83,31 @@ const AddMovieCard = (props) => {
   };
 
   const handleSave = async () => {
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("description", description);
+    formData.append("active", active);
+    formData.append("releaseDate", releaseDate);
+
+    formData.append("video", video);
+    formData.append("image", image);
     axios
-      .put(
-        "http://127.0.0.1:8080/api/v1/admin/movie/addmovie",
-        {
-          id: id,
-          title: title,
-          description: description,
-          url: url,
-          boxArtUrl: boxArtUrl,
-          active: active,
-          releaseDate: releaseDate,
-        },
-        { withCredentials: true }
+      .post(
+        process.env.server_base + "/api/v1/admin/movie/addmovie",
+  formData, 
+        { withCredentials: true,
+       }
       )
       .then((response) => {
         handleClose();
       })
       .catch((error) => {
-        setToastAlert({ opened: true, message: "There was an error saving the movie.  Error: " + error.message });
-    });
+        setToastAlert({
+          opened: true,
+          message:
+            "There was an error saving the movie.  Error: " + error.message,
+        });
+      });
   };
 
   const uploadMovie = async (e) => {

@@ -32,7 +32,7 @@ const MovieList = () => {
  
    const closeCard = () => {
      axios
-     .get("http://127.0.0.1:8080/api/v1/admin/movie/getallmovies", {
+     .get(process.env.server_base + "/api/v1/admin/movie/getallmovies", {
       withCredentials: true,
        })
        .then((response) => {
@@ -63,11 +63,11 @@ const MovieList = () => {
 
   useEffect(() => {
     axios
-      .get("http://127.0.0.1:8080/api/v1/admin/movie/getallmovies", {
+      .get(process.env.server_base + "/api/v1/admin/movie/getallmovies", {
         withCredentials: true,
       })
       .then((response) => {
-        console.log(response.data)
+     
         setMovies(response.data);
       })
       .catch((error) => {
@@ -100,6 +100,9 @@ const MovieList = () => {
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row, index) => {
                 const originalIndex = page * rowsPerPage + index;
+                const timestamp = Date.now(row.releaseDate); 
+
+                row.releaseDate = new Intl.DateTimeFormat('en-US', {year: 'numeric', month: '2-digit',day: '2-digit'}).format(timestamp);
                 return (
                   <TableRow
                     onClick={(e) => handleClick(e, originalIndex)}

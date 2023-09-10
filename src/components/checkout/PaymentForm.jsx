@@ -11,14 +11,14 @@ function PaymentForm() {
   const [clientSecret, setClientSecret] = useState(null);
 
   const stripePromise = loadStripe(
-    "pk_test_51NX6dVJuwHGxhn37cRYeRkMNeKWCHNrqTlEVkHLPoAYwXNIESmMppgjeG0oYISdeg2fiVFPJYSyaR6gYrNBubMZE00aidoSyWd"
+    process.env.stripe_pk
   );
   const options = {
     clientSecret: clientSecret,
   };
 
   useEffect(() => {
-    fetch("http://127.0.0.1:8080/api/v1/subscription/getsecretkey", {
+    fetch(process.env.server_base + "/api/v1/subscription/getsecretkey", {
       method: "GET",
       credentials: "include",
     })

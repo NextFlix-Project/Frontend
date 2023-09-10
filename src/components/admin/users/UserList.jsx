@@ -38,7 +38,7 @@ const UserList = () => {
 
   const closeCard = () => {
     axios
-      .get("http://127.0.0.1:8080/api/v1/admin/user/getallusers", {
+      .get(process.env.server_base + "/api/v1/admin/user/getallusers", {
         withCredentials: true,
       })
       .then((response) => {
@@ -57,7 +57,9 @@ const UserList = () => {
                   ? user.subscription.autoRenew.toString()
                   : "false",
               endDate:
-                user.subscription !== null ? user.subscription.endDate : "NA",
+                user.subscription !== null
+                  ? formatDate(user.subscription.endDate)
+                  : "NA",
               role: user.role,
             };
           })
@@ -84,13 +86,20 @@ const UserList = () => {
     setUserCard({ opened: true, user: usersData[index], closeCard: closeCard });
   };
 
+  const formatDate = (date) => {
+    const options = { year: "numeric", month: "numeric", day: "numeric" };
+    const timestamp = new Date(date).toLocaleDateString(undefined, options);
+
+    return timestamp;
+  };
   useEffect(() => {
     axios
-      .get("http://127.0.0.1:8080/api/v1/admin/user/getallusers", {
+      .get(process.env.server_base + "/api/v1/admin/user/getallusers", {
         withCredentials: true,
       })
       .then((response) => {
         setUsersData(response.data);
+
         setUsers(
           response.data.map((user) => {
             return {
@@ -105,7 +114,9 @@ const UserList = () => {
                   ? user.subscription.autoRenew.toString()
                   : "false",
               endDate:
-                user.subscription !== null ? user.subscription.endDate : "NA",
+                user.subscription !== null
+                  ? formatDate(user.subscription.endDate)
+                  : "NA",
               role: user.role,
             };
           })
@@ -122,7 +133,7 @@ const UserList = () => {
     <div className="admin-dashboard">
       <UserCard data={userCard} />
       <Paper sx={{ width: "100%", overflow: "hidden" }}>
-        <TableContainer sx={{ maxHeight: 'auto' }}>
+        <TableContainer sx={{ maxHeight: "auto" }}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>

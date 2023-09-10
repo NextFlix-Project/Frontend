@@ -12,7 +12,7 @@ function ThankYouPage() {
   useEffect(() => {
     axios
       .post(
-        "http://127.0.0.1:8080/api/v1/subscription/confirmsubscription",
+        process.env.server_base + "/api/v1/subscription/confirmsubscription",
         {
           intent: payment_intent,
         },

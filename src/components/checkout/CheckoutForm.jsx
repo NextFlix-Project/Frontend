@@ -2,15 +2,15 @@ import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Box from "@mui/material/Box";
-import Card from "@mui/joy/Card";
-import CardActions from "@mui/joy/CardActions";
-import CardContent from "@mui/joy/CardContent";
-import Divider from "@mui/joy/Divider";
-import FormControl from "@mui/joy/FormControl";
-import FormLabel from "@mui/joy/FormLabel";
-import Input from "@mui/joy/Input";
-import Typography from "@mui/joy/Typography";
-import Button from "@mui/joy/Button";
+import Card from "@mui/material/Card";
+import CardActions from "@mui/material/CardActions";
+import CardContent from "@mui/material/CardContent";
+import Divider from "@mui/material/Divider";
+import FormControl from "@mui/material/FormControl";
+import FormLabel from "@mui/material/FormLabel";
+import Input from "@mui/material/Input";
+import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
 import SubscriptionsIcon from "@mui/icons-material/Subscriptions";
 import { useNavigate } from "react-router-dom";
 
@@ -27,7 +27,7 @@ function CheckoutForm() {
   });
 
   const navigate = useNavigate();
-  
+
   const [name, setName] = useState(null);
   const stripe = useStripe();
   const elements = useElements();
@@ -35,23 +35,23 @@ function CheckoutForm() {
   const CARD_ELEMENT_OPTIONS = {
     style: {
       base: {
-      //  color: "#32325d",
+        color: "white",
         fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
         fontSmoothing: "antialiased",
         fontSize: "16px",
         "::placeholder": {
-       //   color: "#aab7c4",
+          color: "#aab7c4",
         },
       },
       invalid: {
-   //     color: "#fa755a",
+        color: "#fa755a",
         iconColor: "#fa755a",
       },
     },
   };
 
   useEffect(() => {
-    fetch("http://127.0.0.1:8080/api/v1/subscription/getsubscription", {
+    fetch(process.env.server_base + "/api/v1/subscription/getsubscription", {
       method: "GET",
       credentials: "include",
     })
@@ -80,13 +80,13 @@ function CheckoutForm() {
     if (confirmPayment?.error) {
       alert(confirmPayment.error.message);
     } else {
-       navigate("/completed");
+      navigate("/completed");
     }
   };
   const subscribe = async (custId) => {
     await axios
       .post(
-        "http://127.0.0.1:8080/api/v1/subscription/subscribe",
+        process.env.server_base + "/api/v1/subscription/subscribe",
         {
           customerId: custId.stripeCustomerId,
         },
@@ -95,16 +95,17 @@ function CheckoutForm() {
         }
       )
       .then((response) => {
- 
         confirmPayment(response.data.clientSecret);
-
-    
       })
       .catch((error) => {
         console.error("Error:", error.message);
       });
   };
 
+  const handleCancel = (e) => {
+    e.preventDefault();
+    navigate("/");
+  };
   const purchaseSubscription = async () => {
     try {
       const paymentMethod = await stripe.createPaymentMethod({
@@ -118,7 +119,7 @@ function CheckoutForm() {
 
       const response = await axios
         .post(
-          "http://127.0.0.1:8080/api/v1/customer/createcustomer",
+          process.env.server_base + "/api/v1/customer/createcustomer",
           {
             paymentId: paymentMethod.paymentMethod.id,
             name: name,
@@ -150,6 +151,7 @@ function CheckoutForm() {
           mx: "auto",
           overflow: "auto",
           resize: "none",
+          borderRadius: "15px",
         }}
       >
         <Typography level="title-lg" startDecorator={<SubscriptionsIcon />}>
@@ -179,15 +181,28 @@ function CheckoutForm() {
               minWidth: "200%",
               display: "flex",
               flexDirection: "row-reverse",
-             }}
+            }}
           >
-            <CardActions sx={{ gridColumn: "1/-1", width: "10ch" }}>
-              <Button variant="solid" color="danger">
+            <CardActions
+              sx={{
+                gridColumn: "1/-1",
+                width: "10ch",
+                paddingBottom: 0,
+                marginBottom: 0,
+              }}
+            >
+              <Button variant="solid" color="danger" onClick={handleCancel}>
                 Cancel
               </Button>
             </CardActions>
             <CardActions
-              sx={{ gridColumn: "1/-1", width: "10ch", paddingRight: "2ch" }}
+              sx={{
+                gridColumn: "1/-1",
+                width: "10ch",
+                paddingRight: "2ch",
+                paddingBottom: 0,
+                marginBottom: 0,
+              }}
             >
               <Button
                 type="submit"

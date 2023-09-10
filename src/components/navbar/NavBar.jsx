@@ -34,7 +34,7 @@ const NavBar = (props) => {
   const handleLogout = async () => {
 
     await axios
-    .get("http://127.0.0.1:8080/api/v1/user/logout",   {withCredentials: true})
+    .get(process.env.server_base + "/api/v1/user/logout",   {withCredentials: true})
     .then((response) => {
       navigate('/');
       handleClose();

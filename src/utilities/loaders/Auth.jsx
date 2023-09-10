@@ -4,7 +4,7 @@ import { redirect } from "react-router-dom";
 export const action = async ({ request, params }) => {
   try {
     const res = await axios.get(
-      "http://127.0.0.1:8080/api/v1/auth/authenticated",
+      process.env.server_base + "/api/v1/auth/authenticated",
       {
         withCredentials: true,
       }

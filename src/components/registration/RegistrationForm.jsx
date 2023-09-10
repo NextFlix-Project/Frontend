@@ -32,7 +32,7 @@ function RegistrationForm() {
 
   useEffect(() => {
     axios
-      .get("http://127.0.0.1:8080/api/v1/auth/authenticated", {
+      .get(process.env.server_base + "/api/v1/auth/authenticated", {
         withCredentials: true,
       })
       .then((response) => {
@@ -52,7 +52,7 @@ function RegistrationForm() {
     if (password1 !== password2) return;
     axios
       .post(
-        "http://127.0.0.1:8080/api/v1/auth/register",
+        process.env.server_base + "/api/v1/auth/register",
         {
           email: email,
           password: password1,

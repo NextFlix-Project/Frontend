@@ -29,7 +29,7 @@ function LoginForm() {
 
   useEffect(() => {
     axios
-      .get("http://127.0.0.1:8080/api/v1/auth/authenticated", {
+      .get(process.env.server_base + "/api/v1/auth/authenticated", {
         withCredentials: true,
       })
       .then((response) => {
@@ -44,7 +44,7 @@ function LoginForm() {
     e.preventDefault();
     axios
       .post(
-        "http://127.0.0.1:8080/api/v1/auth/login",
+        process.env.server_base + "/api/v1/auth/login",
         {
           email: email,
           password: password,

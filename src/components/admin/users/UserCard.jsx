@@ -45,7 +45,7 @@ const UserCard = (props) => {
 
   const handleSave = async () => {
     axios
-    .put("http://127.0.0.1:8080/api/v1/admin/user/update",  {
+    .put(process.env.server_base + "/api/v1/admin/user/update",  {
       firstName: firstname,
       lastName: lastname,
       email: email,
@@ -63,7 +63,7 @@ const UserCard = (props) => {
 
   const handleDelete = async () => {
     axios
-    .post("http://127.0.0.1:8080/api/v1/admin/user/deleteuser",  {
+    .post(process.env.server_base + "/api/v1/admin/user/deleteuser",  {
       firstName: firstname,
       lastName: lastname,
       email: email,

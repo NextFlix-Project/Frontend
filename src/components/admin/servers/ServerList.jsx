@@ -45,7 +45,7 @@ const ServerList = () => {
 
   useEffect(() => {
     axios
-      .get("http://127.0.0.1:8080/api/v1/server/getallservers", {
+      .get(process.env.server_base + "/api/v1/server/getallservers", {
         withCredentials: true,
       })
       .then((response) => {
