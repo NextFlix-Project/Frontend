@@ -1,18 +1,16 @@
-import {useState} from "react";
+import { useState } from "react";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
 import axios from "axios";
 
-import { InputLabel } from '@mui/material';
+import { InputLabel } from "@mui/material";
 
- 
 const UserCard = (props) => {
-
   if (props.data.user === null) return;
 
   const [email, setEmail] = useState(props.data.user.email);
@@ -45,39 +43,45 @@ const UserCard = (props) => {
 
   const handleSave = async () => {
     axios
-    .put(process.env.server_base + "/api/v1/admin/user/update",  {
-      firstName: firstname,
-      lastName: lastname,
-      email: email,
-      role: role
-    },  {withCredentials: true})
-    .then((response) => {
-      handleClose();
-    })
-    .catch((error) => {
-      handleClose();
-    });
-
-   
-  }
+      .put(
+        process.env.server_base + "/api/v1/admin/user/update",
+        {
+          firstName: firstname,
+          lastName: lastname,
+          email: email,
+          role: role,
+        },
+        { withCredentials: true }
+      )
+      .then((response) => {
+        handleClose();
+      })
+      .catch((error) => {
+        handleClose();
+      });
+  };
 
   const handleDelete = async () => {
     axios
-    .post(process.env.server_base + "/api/v1/admin/user/deleteuser",  {
-      firstName: firstname,
-      lastName: lastname,
-      email: email,
-      role: role
-    },  {withCredentials: true})
-    .then((response) => {
-      handleClose();
-    })
+      .post(
+        process.env.server_base + "/api/v1/admin/user/deleteuser",
+        {
+          firstName: firstname,
+          lastName: lastname,
+          email: email,
+          role: role,
+        },
+        { withCredentials: true }
+      )
+      .then((response) => {
+        handleClose();
+      })
       .catch((error) => {
         handleClose();
-    });
+      });
   };
 
-   return (
+  return (
     <div>
       <Dialog open={props.data.opened} onClose={handleClose}>
         <DialogContent>
@@ -113,18 +117,16 @@ const UserCard = (props) => {
             onChange={handleEmailChange}
           />
 
-          <InputLabel sx={{marginTop:'25px'}}> Role </InputLabel>
+          <InputLabel sx={{ marginTop: "25px" }}> Role </InputLabel>
           <Select
-            sx={{marginTop:'5px'}}
+            sx={{ marginTop: "5px" }}
             value={role}
             label="Role"
             onChange={handleRoleChange}
-          > 
-            <MenuItem value={'USER'}>USER</MenuItem>
-            <MenuItem value={'ADMIN'}>ADMIN</MenuItem>
- 
+          >
+            <MenuItem value={"USER"}>USER</MenuItem>
+            <MenuItem value={"ADMIN"}>ADMIN</MenuItem>
           </Select>
-
         </DialogContent>
         <DialogActions>
           <Button onClick={handleSave}>Save</Button>

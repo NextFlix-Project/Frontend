@@ -31,7 +31,7 @@ function ThankYouPage() {
 
   return (
     <div id="thank-you-page">
-      <div class="thank-you-msg">THANK YOU FOR SUBSCRIBING</div>
+      <div className="thank-you-msg">THANK YOU FOR SUBSCRIBING</div>
     </div>
   );
 }

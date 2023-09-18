@@ -21,10 +21,8 @@ const AddMovieCard = (props) => {
 
   const [title, setTitle] = useState();
   const [description, setDescription] = useState();
-  const [url, setURL] = useState();
-  const [boxArtUrl, setBoxArtURL] = useState();
   const [active, setActive] = useState(false);
-  const [releaseDate, setReleaseDate] = useState();
+  const [releaseDate, setReleaseDate] = useState(dayjs(Date.now()));
   const [video, setVideo] = useState();
   const [image, setImage] = useState();
   const [toastAlert, setToastAlert] = useState({
@@ -58,16 +56,6 @@ const AddMovieCard = (props) => {
     setDescription(e.target.value);
   };
 
-  const handleURLChange = (e) => {
-    e.preventDefault();
-    setURL(e.target.value);
-  };
-
-  const handleBoxArtURLChange = (e) => {
-    e.preventDefault();
-    setBoxArtURL(e.target.value);
-  };
-
   const handleActiveChange = (e) => {
     e.preventDefault();
     setActive(e.target.checked);
@@ -79,6 +67,13 @@ const AddMovieCard = (props) => {
   };
 
   const handleClose = () => {
+    setTitle("");
+    setDescription("");
+    setActive(false);
+    setReleaseDate(dayjs(Date.now()));
+    setVideo(null);
+    setImage(null);
+
     props.data.closeCard();
   };
 
@@ -117,8 +112,7 @@ const AddMovieCard = (props) => {
     const videoType = mimeType.split("/")[0];
     if (videoType === "video") {
       setVideo(e.target.files[0]);
-      console.log(e);
-    } else {
+     } else {
       setToastAlert({ opened: true, message: "File is not a video" });
     }
   };
@@ -154,7 +148,6 @@ const AddMovieCard = (props) => {
           />
 
           <TextField
-            autoFocus
             margin="dense"
             label="Description"
             type="text"

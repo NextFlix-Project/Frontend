@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import AppBar from "@mui/material/AppBar";
@@ -24,7 +24,7 @@ const drawerWidth = 15;
 
 export default function SideBar() {
   const [selected, setSelected] = useState(0);
-  const [movieCard, setMovieCard] = React.useState({
+  const [movieCard, setMovieCard] = useState({
     opened: false,
     movie: null,
   });

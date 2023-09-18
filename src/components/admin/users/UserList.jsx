@@ -1,12 +1,6 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
 import UserCard from "./UserCard";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
@@ -20,12 +14,12 @@ import TableRow from "@mui/material/TableRow";
 import "./UserList.css";
 
 const UserList = () => {
-  const [users, setUsers] = React.useState(null);
+  const [users, setUsers] = useState(null);
 
-  const [usersData, setUsersData] = React.useState(null);
-  const [userCard, setUserCard] = React.useState({ opened: false, user: null });
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [usersData, setUsersData] = useState(null);
+  const [userCard, setUserCard] = useState({ opened: false, user: null });
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const columns = [
     { id: "name", label: "Name", minWidth: 170 },
@@ -82,7 +76,6 @@ const UserList = () => {
 
   const handleClick = (e, index) => {
     e.preventDefault();
-    console.log("handleclick " + index + "  " + users[index].name);
     setUserCard({ opened: true, user: usersData[index], closeCard: closeCard });
   };
 

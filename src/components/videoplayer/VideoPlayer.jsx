@@ -2,37 +2,25 @@ import React, { useEffect, useRef } from "react";
 import dashjs from "dashjs";
 import axios from "axios";
 
-const VideoPlayer = () => {
-  const videoRef = useRef(null);
+const VideoPlayer = (props) => {
+  let videoRef = useRef(null);
+  let player = null;
 
   useEffect(() => {
     if (videoRef.current) {
-      const player = dashjs.MediaPlayer().create();
+      player = dashjs.MediaPlayer().create();
 
-      player.initialize(videoRef.current, "http://127.0.0.1:8888/stream", true);
+      player.initialize(videoRef.current, props.movie.url, true);
     }
+
+  
   }, []);
 
-  const initDash = async () => {
-    if (videoRef.current) {
-      axios
-        .get("http://127.0.0.1:8888/stream")
-        .then((response) => {
-          const player = dashjs.MediaPlayer().create();
-          player.initialize(videoRef.current, response.data, true);
-        })
-        .catch((error) => {
-          console.error("Error fetching MPD:", error);
-        });
-    }
-  };
-  const getStream = async () => {
-    const content = await fetch("http://127.0.0.1:8888/stream");
+ 
 
-    return content;
-  };
-
-  return <video ref={videoRef} controls />;
+  return (
+    <video ref={videoRef} autoPlay controls style={{ width: "99vw", height: "100vh" }} />
+  );
 };
 
 export default VideoPlayer;

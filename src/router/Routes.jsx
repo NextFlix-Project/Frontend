@@ -4,6 +4,7 @@ import LoginPage from "../pages/login/LoginPage";
 import RegistrationPage from "../pages/registration/RegistrationPage";
 import PaymentPage from "../pages/payment/PaymentPage";
 import ThankYouPage from "../pages/thankyou/ThankYouPage";
+import VideoPage from "../pages/videopage/VideoPage";
 import { action as AuthLoader } from "../utilities/loaders/Auth";
 import { action as AdminLoader } from "../utilities/loaders/Admin";
 import PublicLayout from "../layouts/PublicLayout";
@@ -19,7 +20,10 @@ const Routes = [
         path: "/",
         element: <MainPage />,
       },
-
+      {
+        path: "/video",
+        element: <VideoPage />,
+      },
       {
         path: "/subscribe",
         element: <PaymentPage />,
@@ -28,13 +32,12 @@ const Routes = [
         path: "/completed",
         element: <ThankYouPage />,
       },
-  
     ],
   },
   {
     path: "/",
     element: <PublicLayout />,
- 
+
     children: [
       {
         path: "/login",
@@ -56,10 +59,8 @@ const Routes = [
         path: "/admin",
         element: <DashboardPage />,
       },
-    
     ],
   },
-  
 ];
 
 export default Routes;

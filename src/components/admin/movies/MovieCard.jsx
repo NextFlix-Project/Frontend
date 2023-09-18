@@ -16,7 +16,6 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 const MovieCard = (props) => {
   if (props.data.movie === null) return;
 
-  const [id, setId] = useState(props.data.movie.id);
   const [title, setTitle] = useState(props.data.movie.title);
   const [description, setDescription] = useState(props.data.movie.description);
   const [url, setURL] = useState(props.data.movie.url);
@@ -63,7 +62,7 @@ const MovieCard = (props) => {
       .put(
         process.env.server_base + "/api/v1/admin/movie/updatemovie",
         {
-          id: id,
+          id: props.data.movie.id,
           title: title,
           description: description,
           url: url,
@@ -86,7 +85,7 @@ const MovieCard = (props) => {
       .post(
         process.env.server_base + "/api/v1/admin/movie/deletemovie",
         {
-          id: id,
+          id: props.data.movie.id,
           title: title,
           description: description,
           url: url,

@@ -23,8 +23,8 @@ function RegistrationForm() {
   const [firstname, setFirstName] = useState();
   const [lastname, setLastName] = useState();
 
-  const [showPassword1, setShowPassword1] = React.useState(false);
-  const [showPassword2, setShowPassword2] = React.useState(false);
+  const [showPassword1, setShowPassword1] = useState(false);
+  const [showPassword2, setShowPassword2] = useState(false);
 
   const navigate = useNavigate();
   const handleClickShowPassword1 = () => setShowPassword1((show) => !show);

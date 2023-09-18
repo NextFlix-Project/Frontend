@@ -34,6 +34,7 @@ function CheckoutForm() {
 
   const CARD_ELEMENT_OPTIONS = {
     style: {
+      theme: 'night',
       base: {
         color: "white",
         fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
@@ -75,7 +76,15 @@ function CheckoutForm() {
   };
 
   const confirmPayment = async (clientSecret) => {
-    const confirmPayment = await stripe.confirmCardPayment(clientSecret);
+    const confirmPayment = await stripe.confirmCardPayment(clientSecret, {
+      payment_method: {
+        card: elements.getElement(CardElement)
+        
+      },
+    })
+    .then(function(result) {
+      // Handle result.error or result.paymentIntent
+    });
 
     if (confirmPayment?.error) {
       alert(confirmPayment.error.message);
@@ -147,16 +156,20 @@ function CheckoutForm() {
         sx={{
           maxHeight: "max-content",
           maxWidth: "100%",
-          minWidth: "400px",
+          minWidth: "600px",
+          minHeight: "300px",
           mx: "auto",
           overflow: "auto",
           resize: "none",
           borderRadius: "15px",
+          backgroundColor:'rgb(50,50,50)'
         }}
       >
-        <Typography level="title-lg" startDecorator={<SubscriptionsIcon />}>
-          Subscribe
-        </Typography>
+        
+        <div style={{width:'100%', display:'flex', justifyContent:'center', flexDirection:'row'}}> 
+         <SubscriptionsIcon sx={{height: '50px', marginRight:'15px'}} /> <Typography align='center' sx={{ paddingTop:'15px', height: '50px', textAlign:'center'}}>Subscribe   </Typography>
+         </div>
+      
         <Divider inset="none" />
         <CardContent
           sx={{
@@ -170,10 +183,10 @@ function CheckoutForm() {
 
             <Input placeholder="Enter cardholder's full name" />
 
-            <FormLabel style={{ paddingTop: "2%", paddingBottom: "2%" }}>
+            <FormLabel style={{ paddingTop: "5%", paddingBottom: "2%" }}>
               Card details
             </FormLabel>
-            <CardElement options={CARD_ELEMENT_OPTIONS} />
+            <CardElement options={CARD_ELEMENT_OPTIONS}/>
           </FormControl>
 
           <Box
