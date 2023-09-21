@@ -89,9 +89,8 @@ const AddMovieCard = (props) => {
     axios
       .post(
         process.env.server_base + "/api/v1/admin/movie/addmovie",
-  formData, 
-        { withCredentials: true,
-       }
+        formData,
+        { withCredentials: true }
       )
       .then((response) => {
         handleClose();
@@ -112,7 +111,7 @@ const AddMovieCard = (props) => {
     const videoType = mimeType.split("/")[0];
     if (videoType === "video") {
       setVideo(e.target.files[0]);
-     } else {
+    } else {
       setToastAlert({ opened: true, message: "File is not a video" });
     }
   };

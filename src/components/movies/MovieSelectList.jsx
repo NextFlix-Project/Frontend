@@ -10,6 +10,8 @@ import Fab from "@mui/material/Fab";
 import Zoom from "@mui/material/Zoom";
 import Rating from "@mui/material/Rating";
 import Stack from "@mui/material/Stack";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { useMediaQuery } from "@mui/material";
 
 const MovieSelectList = () => {
   const [movies, setMovies] = useState({
@@ -20,7 +22,10 @@ const MovieSelectList = () => {
     ratings: [],
   });
 
+  const [watchList, setWatchList] = useState(new Map());
+
   const navigate = useNavigate();
+  const matches = useMediaQuery("(min-width:800px)");
 
   useEffect(() => {
     getMovies();
@@ -32,6 +37,16 @@ const MovieSelectList = () => {
         withCredentials: true,
       })
       .then((response) => {
+        if (response.data.watchList !== undefined)
+          setWatchList(
+            new Map(
+              response.data.watchList.map((watchItem) => [
+                watchItem.movie.id,
+                watchItem,
+              ])
+            )
+          );
+
         setMovies({
           movies: response.data.movies,
           ratings: response.data.ratings,
@@ -69,9 +84,7 @@ const MovieSelectList = () => {
       });
   };
 
-  const handleAddWishlist = (e, index) => {
-    e.preventDefault();
-    e.stopPropagation();
+  const addToWatchList = (index) => {
     axios
       .post(
         process.env.server_base + "/api/v1/watchlist/add",
@@ -89,13 +102,44 @@ const MovieSelectList = () => {
         console.error("Error:", error.message);
       });
   };
+
+  const removeFromWatchList = (index) => {
+    axios
+      .post(
+        process.env.server_base + "/api/v1/watchlist/delete",
+        {
+          id: watchList.get(movies.movies[index].id).id,
+        },
+        {
+          withCredentials: true,
+        }
+      )
+      .then((response) => {
+        getMovies();
+      })
+      .catch((error) => {
+        console.error("Error:", error.message);
+      });
+  };
+
+  const handleAddWishlist = (e, index) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (watchList.has(movies.movies[index].id)) removeFromWatchList(index);
+    else addToWatchList(index);
+  };
   const handleMovieClicked = (e, index) => {
     e.preventDefault();
     navigate("/video", { state: movies.movies[index] });
   };
 
   const toggleFab = (e, index, value) => {
+    e.preventDefault();
+
     e.stopPropagation();
+
+    if (watchList.has(movies.movies[index].id)) return;
 
     const checkedArr = Array(movies.movies.length).fill(false);
 
@@ -112,6 +156,8 @@ const MovieSelectList = () => {
   };
 
   const toggleFade = (e, index, value) => {
+    e.preventDefault();
+    e.stopPropagation();
     const fadeInArr = Array(movies.movies.length).fill(false);
     const checkedArr = Array(movies.movies.length).fill(false);
 
@@ -141,22 +187,24 @@ const MovieSelectList = () => {
   };
 
   return (
-    <ImageList sx={{ width: "100%", height: "100%" }} cols={3} gap={20}>
+    <ImageList
+      sx={{ width: "100%", height: "100%" }}
+      cols={matches ? 3 : 2}
+      gap={20}
+    >
       {movies.movies.map((movie, index) => {
-        console.log(`${process.env.server_base}/api/v1/file/image/${movie.id}`);
         return (
           <ImageListItem
             key={index}
-   
- 
-             onClick={(e) => handleMovieClicked(e, index)}
+            onClick={(e) => handleMovieClicked(e, index)}
             onMouseOver={(e) => toggleFade(e, index, true)}
             onMouseLeave={(e) => toggleFade(e, index, false)}
           >
             <img
               style={{
                 maxWidth: "100%",
-                height: "auto",
+                backgroundColor: "black",
+                height: "20vw",
                 width: "30vw",
                 maxHeight: "20vw",
               }}
@@ -176,7 +224,6 @@ const MovieSelectList = () => {
                 justifyContent: "space-between",
                 backgroundColor: "black",
                 alignContent: "center",
-
               }}
             >
               <ImageListItemBar
@@ -187,24 +234,21 @@ const MovieSelectList = () => {
                   marginTop: "5px",
                   marginLeft: "10px",
                   maxWidth: "50%",
-             
-         
                 }}
               />
               <Stack
                 spacing={1}
                 sx={{
                   backgroundColor: "black",
-                  marginTop: "7px",
                   marginRight: "10px",
                   maxWidth: "50%",
-             
-             
+                  justifyContent: "center",
                 }}
               >
                 <Rating
                   name="size-large"
                   defaultValue={calcRating(movie.id)}
+                  sx={{ fontSize: "3.2vmin" }}
                   size="large"
                   precision={1}
                   onClick={(e) => e.stopPropagation()}
@@ -235,12 +279,13 @@ const MovieSelectList = () => {
                       zIndex: 5,
                     }}
                   >
-                    <AddIcon />
+                    {console.log(movie.id, watchList)}
+                    {watchList.has(movie.id) ? <DeleteIcon /> : <AddIcon />}
                   </Fab>
                 </Zoom>
                 <Zoom
                   in={movies.checked[index]}
-                  timeout={50}
+                  timeout={10}
                   onMouseLeave={(e) => toggleFab(e, index, false)}
                   onMouseOver={(e) => toggleFab(e, index, true)}
                 >

@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 import MovieSelectList from "../../components/movies/MovieSelectList";
 
 function MainPage() {
- 
   const [subscribed, setSubscribed] = useState(false);
 
   const navigate = useNavigate();
@@ -16,9 +15,8 @@ function MainPage() {
         withCredentials: true,
       })
       .then((response) => {
-        console.log(response)
-        if (response.data !== true)
-          navigate('/subscribe');
+        console.log(response);
+        if (response.data !== true) navigate("/subscribe");
 
         setSubscribed(response.data);
       })
@@ -27,12 +25,10 @@ function MainPage() {
       });
   }, []);
 
-   
-
   const renderMovieList = () => {
     return (
       <div style={{ display: "flex", justifyContent: "center" }}>
-         <MovieSelectList/>
+        <MovieSelectList />
       </div>
     );
   };

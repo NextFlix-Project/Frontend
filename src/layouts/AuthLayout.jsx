@@ -8,7 +8,7 @@ const AuthLayout = () => {
 
   return (
     <div className="main-layout">
-      <NavBar auth={{loggedIn: data.auth, role: data.role}}/>
+      <NavBar auth={{ loggedIn: data.auth, role: data.role }} />
 
       <Outlet context={data} />
     </div>

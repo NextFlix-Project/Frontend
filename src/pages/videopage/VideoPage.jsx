@@ -17,7 +17,6 @@ function VideoPage() {
         }
       )
       .then((response) => {
-   
         setMovie({
           title: location.state.title,
           description: location.state.description,
@@ -36,35 +35,33 @@ function VideoPage() {
           display: "flex",
           justifyContent: "center",
           flexDirection: "column",
-          width: '99vw',
-          height: '100vh',
+          width: "99vw",
+          height: "100vh",
           position: "absolute",
-          objectFit: 'cover',
+          objectFit: "cover",
           marginTop: "0px",
           top: "50%",
           left: "50%",
-    
+
           transform: "translate(-50%,-50%)",
-          
         }}
       >
         <div
           style={{
-
-            width: '99vw',
-            height: '100vh',
+            width: "99vw",
+            height: "100vh",
             position: "absolute",
-            objectFit: 'cover',
+            objectFit: "cover",
             marginTop: "0px",
             top: "50%",
             left: "50%",
-         
+
             transform: "translate(-50%,-50%)",
           }}
         >
           <VideoPlayer movie={movie} />
 
-          <div >
+          <div>
             <div>{movie.title} </div>
             <div>{movie.description} </div>
           </div>

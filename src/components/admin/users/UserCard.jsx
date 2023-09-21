@@ -87,6 +87,7 @@ const UserCard = (props) => {
         <DialogContent>
           <TextField
             autoFocus
+            focused={true}
             margin="dense"
             label="First Name"
             type="text"
@@ -96,7 +97,6 @@ const UserCard = (props) => {
             onChange={handleFirstNameChange}
           />
           <TextField
-            autoFocus
             margin="dense"
             label="Last Name"
             type="text"
@@ -106,7 +106,6 @@ const UserCard = (props) => {
             onChange={handleLastNameChange}
           />
           <TextField
-            autoFocus
             margin="dense"
             label="Email Address"
             type="email"

@@ -1,16 +1,14 @@
 import NavBar from "../components/navbar/NavBar";
 import { Outlet } from "react-router-dom";
-import './PublicLayout.css';
+import "./PublicLayout.css";
 
 const PublicLayout = () => {
   return (
-    <div className='main-layout'> 
+    <div className="main-layout">
       <NavBar />
-    
-        <Outlet />
-       
+
+      <Outlet />
     </div>
-   
   );
 };
 

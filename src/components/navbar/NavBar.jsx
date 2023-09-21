@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -20,6 +20,7 @@ const NavBar = (props) => {
   const navigate = useNavigate();
 
   const [watchListOpened, setWatchListOpened] = useState(false);
+  const watchListRef = useRef(null);
 
   const handleChange = (event) => {
     setAuth(event.target.checked);
@@ -60,16 +61,13 @@ const NavBar = (props) => {
 
   const watchListClicked = (e, value) => {
     e.preventDefault();
-     
+
+    if (watchListRef.current) watchListRef.current.updateWatchList();
     setWatchListOpened(value);
-  }
+  };
   return (
     <div className="navBar">
- 
-  
-
       <Box>
-
         <AppBar position="static" height="10px">
           <Toolbar className="toolBar">
             <Typography
@@ -85,9 +83,11 @@ const NavBar = (props) => {
             >
               NextFlix
             </Typography>
-            <div style={{display:'flex', flexDirection:'row'}}>
-            <Typography
-                onClick={(e) => {watchListClicked(e, true)}}
+            <div style={{ display: "flex", flexDirection: "row" }}>
+              <Typography
+                onClick={(e) => {
+                  watchListClicked(e, true);
+                }}
                 variant="h6"
                 component="div"
                 sx={{
@@ -99,22 +99,22 @@ const NavBar = (props) => {
               >
                 WatchList
               </Typography>
-            {auth && auth.role === "ADMIN" && (
-              <Typography
-                onClick={adminClicked}
-                variant="h6"
-                component="div"
-                sx={{
-                  marginLeft: '20px',
-                  flexGrow: 1,
-                  textAlign: "right",
-                  fontWeight: "400",
-                  fontSize: "1em",
-                }}
-              >
-                Admin
-              </Typography>
-            )}
+              {auth && auth.role === "ADMIN" && (
+                <Typography
+                  onClick={adminClicked}
+                  variant="h6"
+                  component="div"
+                  sx={{
+                    marginLeft: "20px",
+                    flexGrow: 1,
+                    textAlign: "right",
+                    fontWeight: "400",
+                    fontSize: "1em",
+                  }}
+                >
+                  Admin
+                </Typography>
+              )}
             </div>
             {auth && (
               <div>
@@ -151,7 +151,11 @@ const NavBar = (props) => {
             )}
           </Toolbar>
         </AppBar>
-        <WatchList opened={watchListOpened} close={watchListClicked} />
+        <WatchList
+          ref={watchListRef}
+          opened={watchListOpened}
+          close={watchListClicked}
+        />
       </Box>
     </div>
   );

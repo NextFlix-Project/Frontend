@@ -1,35 +1,25 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import React, { useEffect } from "react";
 
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import CheckoutForm from "./CheckoutForm";
 
-import './PaymentForm.css';
+import "./PaymentForm.css";
 
 function PaymentForm() {
-  const [clientSecret, setClientSecret] = useState(null);
-
-  const stripePromise = loadStripe(
-    process.env.stripe_pk
-  );
+  const stripePromise = loadStripe(process.env.stripe_pk);
   const options = {
-    mode: 'setup',
-    currency: 'usd',
+    mode: "setup",
+    currency: "usd",
   };
-  
 
-  useEffect(() => {
- 
-  }, []);
+  useEffect(() => {}, []);
 
   return (
     <div className="payment-form">
-       
-        <Elements options={options} stripe={stripePromise}>
-          <CheckoutForm />
-        </Elements>
-  
+      <Elements options={options} stripe={stripePromise}>
+        <CheckoutForm />
+      </Elements>
     </div>
   );
 }

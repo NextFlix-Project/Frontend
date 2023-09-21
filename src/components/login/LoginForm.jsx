@@ -75,14 +75,18 @@ function LoginForm() {
     <Box
       component="form"
       sx={{
-        width: "35ch",
+        width: "50ch",
         display: "flex",
         padding: "5ch",
+        backgroundColor: "rgb(25,25,25)",
         borderRadius: "10px",
         flexDirection: "column",
         flexGrow: 1,
         flexBasis: 0,
-        }}
+        outline: "1px",
+        outlineColor: "white",
+        outlineStyle: "solid",
+      }}
       noValidate
       autoComplete="off"
       onSubmit={login}
@@ -114,7 +118,10 @@ function LoginForm() {
         }}
       />
 
-      <FormControl sx={{ paddingBottom: "3ch" }} variant="outlined">
+      <FormControl
+        sx={{ paddingBottom: "3ch", marginTop: "2ch" }}
+        variant="outlined"
+      >
         <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
         <OutlinedInput
           required
@@ -151,7 +158,7 @@ function LoginForm() {
           width: "35ch",
           display: "flex",
           flexDirection: "row",
-         }}
+        }}
       >
         <FormLabel
           id="demo-radio-buttons-group-label"

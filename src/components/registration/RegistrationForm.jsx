@@ -15,6 +15,7 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Button from "@mui/material/Button";
 import FormLabel from "@mui/material/FormLabel";
+import ToastAlert from "../toastalert/ToastAlert";
 
 function RegistrationForm() {
   const [email, setEmail] = useState();
@@ -25,6 +26,11 @@ function RegistrationForm() {
 
   const [showPassword1, setShowPassword1] = useState(false);
   const [showPassword2, setShowPassword2] = useState(false);
+
+  const [toastAlert, setToastAlert] = useState({
+    message: "",
+    opened: false,
+  });
 
   const navigate = useNavigate();
   const handleClickShowPassword1 = () => setShowPassword1((show) => !show);
@@ -49,7 +55,13 @@ function RegistrationForm() {
   const register = (e) => {
     e.preventDefault();
 
-    if (password1 !== password2) return;
+    if (password1 !== password2) {
+      setToastAlert({
+        message: "Passwords do not match",
+        opened: true,
+      });
+      return;
+    }
     axios
       .post(
         process.env.server_base + "/api/v1/auth/register",
@@ -67,7 +79,10 @@ function RegistrationForm() {
         if (response.status === 200) navigate("/subscribe");
       })
       .catch((error) => {
-        console.error("Error:", error.message);
+        setToastAlert({
+          message: "Error: " + error.message,
+          opened: true,
+        });
       });
   };
 
@@ -95,136 +110,166 @@ function RegistrationForm() {
     setPassword2(e.target.value);
   };
 
+  const closeToast = () => {
+    console.log("close");
+    setToastAlert({
+      message: null,
+      opened: false,
+    });
+  };
+
   return (
-    <Box
-      component="form"
-      sx={{
-        width: "35ch",
-        display: "flex",
-        padding: "5ch",
-        borderRadius: "10px",
-        flexDirection: "column",
-        flexGrow: 1,
-        flexBasis: 0,
-       }}
-      noValidate
-      autoComplete="off"
-      onSubmit={register}
-    >
-      <FormLabel
-        id="demo-radio-buttons-group-label"
+    <>
+      <div style={{}}>
+        <ToastAlert
+          opened={toastAlert.opened}
+          message={toastAlert.message}
+          closeToast={closeToast}
+        />
+      </div>
+      <Box
+        component="form"
         sx={{
-          fontSize: "3ch",
-          textAlign: { sm: "left" },
-          paddingBottom: "2ch",
+          width: "50ch",
+          display: "flex",
+          padding: "5ch",
+          backgroundColor: "rgb(25,25,25)",
+          borderRadius: "10px",
+          flexDirection: "column",
+          flexGrow: 1,
+          flexBasis: 0,
+          outline: "1px",
+          outlineColor: "white",
+          outlineStyle: "solid",
         }}
+        noValidate
+        autoComplete="off"
+        onSubmit={register}
       >
-        Register
-      </FormLabel>
+        <FormLabel
+          id="demo-radio-buttons-group-label"
+          sx={{
+            fontSize: "3ch",
+            textAlign: { sm: "left" },
+            paddingBottom: "2ch",
+          }}
+        >
+          Register
+        </FormLabel>
 
-      <TextField
-        required
-        focused={true}
-        sx={{ paddingBottom: "1ch" }}
-        id="outlined-basic"
-        label="first name"
-        variant="outlined"
-        onChange={handleFirstNameChange}
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <AccountCircle />
-            </InputAdornment>
-          ),
-        }}
-      />
-      <TextField
-        required
-        sx={{ paddingBottom: "1ch" }}
-        id="outlined-basic"
-        label="last name"
-        variant="outlined"
-        onChange={handleLastNameChange}
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <AccountCircle />
-            </InputAdornment>
-          ),
-        }}
-      />
-      <TextField
-        required
-        sx={{ paddingBottom: "1ch" }}
-        id="outlined-basic"
-        label="email"
-        variant="outlined"
-        onChange={handleEmailChange}
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <EmailIcon />
-            </InputAdornment>
-          ),
-        }}
-      />
-
-      <FormControl sx={{ paddingBottom: "1ch" }} variant="outlined">
-        <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
-        <OutlinedInput
+        <TextField
+          autoComplete="off"
           required
-          id="outlined-adornment-password"
-          type={showPassword1 ? "text" : "password"}
-          onChange={handlePasswordChange1}
-          endAdornment={
-            <InputAdornment position="end">
-              <IconButton
-                aria-label="toggle password visibility"
-                onClick={handleClickShowPassword1}
-                onMouseDown={handleMouseDownPassword}
-                edge="end"
-              >
-                {showPassword1 ? <VisibilityOff /> : <Visibility />}
-              </IconButton>
-            </InputAdornment>
-          }
-          label="Password"
+          focused={true}
+          sx={{ paddingBottom: "3ch" }}
+          id="outlined-basic"
+          label="first name"
+          variant="outlined"
+          onChange={handleFirstNameChange}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <AccountCircle />
+              </InputAdornment>
+            ),
+          }}
         />
-      </FormControl>
-
-      <FormControl sx={{ paddingBottom: "1ch" }} variant="outlined">
-        <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
-        <OutlinedInput
+        <TextField
+          autoComplete="off"
           required
-          id="outlined-adornment-password"
-          type={showPassword2 ? "text" : "password"}
-          onChange={handlePasswordChange2}
-          endAdornment={
-            <InputAdornment position="end">
-              <IconButton
-                aria-label="toggle password visibility"
-                onClick={handleClickShowPassword2}
-                onMouseDown={handleMouseDownPassword}
-                edge="end"
-              >
-                {showPassword2 ? <VisibilityOff /> : <Visibility />}
-              </IconButton>
-            </InputAdornment>
-          }
-          label="Password"
+          sx={{ paddingBottom: "3ch" }}
+          id="outlined-basic"
+          label="last name"
+          variant="outlined"
+          onChange={handleLastNameChange}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <AccountCircle />
+              </InputAdornment>
+            ),
+          }}
         />
-      </FormControl>
+        <TextField
+          autoComplete="off"
+          required
+          sx={{ paddingBottom: "3ch" }}
+          id="outlined-basic"
+          label="email"
+          variant="outlined"
+          onChange={handleEmailChange}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <EmailIcon />
+              </InputAdornment>
+            ),
+          }}
+        />
 
-      <Button
-        type="submit"
-        sx={{ marginTop: "5ch" }}
-        variant="contained"
-        color="primary"
-        onClick={register}
-      >
-        Register{" "}
-      </Button>
-    </Box>
+        <FormControl sx={{ paddingBottom: "3ch" }} variant="outlined">
+          <InputLabel htmlFor="outlined-adornment-password">
+            Password
+          </InputLabel>
+          <OutlinedInput
+            autoComplete="new-password"
+            required
+            id="outlined-adornment-password"
+            type={showPassword1 ? "text" : "password"}
+            onChange={handlePasswordChange1}
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={handleClickShowPassword1}
+                  onMouseDown={handleMouseDownPassword}
+                  edge="end"
+                >
+                  {showPassword1 ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            }
+            label="Password"
+          />
+        </FormControl>
+
+        <FormControl sx={{ paddingBottom: "1ch" }} variant="outlined">
+          <InputLabel htmlFor="outlined-adornment-password">
+            Password
+          </InputLabel>
+          <OutlinedInput
+            autoComplete="off"
+            required
+            id="outlined-adornment-password"
+            type={showPassword2 ? "text" : "password"}
+            onChange={handlePasswordChange2}
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={handleClickShowPassword2}
+                  onMouseDown={handleMouseDownPassword}
+                  edge="end"
+                >
+                  {showPassword2 ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            }
+            label="Password"
+          />
+        </FormControl>
+
+        <Button
+          type="submit"
+          sx={{ marginTop: "5ch" }}
+          variant="contained"
+          color="primary"
+          onClick={register}
+        >
+          Register{" "}
+        </Button>
+      </Box>
+    </>
   );
 }
 

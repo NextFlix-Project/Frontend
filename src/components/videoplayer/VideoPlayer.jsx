@@ -9,17 +9,25 @@ const VideoPlayer = (props) => {
   useEffect(() => {
     if (videoRef.current) {
       player = dashjs.MediaPlayer().create();
+      player.updateSettings({
+        debug: { logLevel: dashjs.Debug.LOG_LEVEL_DEBUG },
+      });
 
-      player.initialize(videoRef.current, props.movie.url, true);
+      try {
+        player.initialize(videoRef.current, props.movie.url, true);
+      } catch (e) {
+        console.log(e.message);
+      }
     }
-
-  
   }, []);
 
- 
-
   return (
-    <video ref={videoRef} autoPlay controls style={{ width: "99vw", height: "100vh" }} />
+    <video
+      ref={videoRef}
+      autoPlay
+      controls
+      style={{ width: "99vw", height: "100vh" }}
+    />
   );
 };
 

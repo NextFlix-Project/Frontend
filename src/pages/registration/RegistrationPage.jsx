@@ -1,9 +1,9 @@
 import RegistrationForm from "../../components/registration/RegistrationForm";
-import './RegistrationPage.css';
+import "./RegistrationPage.css";
 
- function RegistrationPage() {
+function RegistrationPage() {
   return (
-    <div className='registration-page'>
+    <div className="registration-page">
       <RegistrationForm />
     </div>
   );

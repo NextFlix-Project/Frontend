@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
@@ -9,11 +9,12 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
- 
+
 const ServerList = () => {
   const [servers, setServers] = useState(null);
 
   const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
   const columns = [
     { id: "url", label: "URL", minWidth: 170 },
@@ -21,7 +22,7 @@ const ServerList = () => {
     { id: "failedHeartbeat", label: "Failed Heartbeats", minWidth: 200 },
     { id: "serverType", label: "Server Type", minWidth: 50 },
   ];
- 
+
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -30,7 +31,6 @@ const ServerList = () => {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
-
 
   const handleClick = (e, index) => {
     e.preventDefault();
@@ -50,64 +50,64 @@ const ServerList = () => {
   }, []);
 
   if (servers === null) return;
-  return ( 
+  return (
     <div className="admin-dashboard">
-     <Paper sx={{ width: "100%", overflow: "hidden" }}>
-      <TableContainer sx={{ maxHeight: 'auto' }}>
-        <Table stickyHeader aria-label="sticky table">
-          <TableHead>
-            <TableRow>
-              {columns.map((column) => (
-                <TableCell
-                  key={column.id}
-                  align={column.align}
-                  style={{ minWidth: column.minWidth }}
-                >
-                  {column.label}
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {servers
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((row, index) => {
-                const originalIndex = page * rowsPerPage + index;
-                return (
-                  <TableRow
-                    onClick={(e) => handleClick(e, originalIndex)}
-                    hover
-                    role="checkbox"
-                    tabIndex={-1}
-                    key={index}
+      <Paper sx={{ width: "100%", overflow: "hidden" }}>
+        <TableContainer sx={{ maxHeight: "auto" }}>
+          <Table stickyHeader aria-label="sticky table">
+            <TableHead>
+              <TableRow>
+                {columns.map((column) => (
+                  <TableCell
+                    key={column.id}
+                    align={column.align}
+                    style={{ minWidth: column.minWidth }}
                   >
-                    {columns.map((column) => {
-                      const value = row[column.id].toString();
-                      return (
-                        <TableCell key={column.id} align={column.align}>
-                          {column.format && typeof value === "number"
-                            ? column.format(value)
-                            : value}
-                        </TableCell>
-                      );
-                    })}
-                  </TableRow>
-                );
-              })}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <TablePagination
-        rowsPerPageOptions={[10, 25, 100]}
-        component="div"
-        count={servers.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
-    </Paper>
-  </div>
+                    {column.label}
+                  </TableCell>
+                ))}
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {servers
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((row, index) => {
+                  const originalIndex = page * rowsPerPage + index;
+                  return (
+                    <TableRow
+                      onClick={(e) => handleClick(e, originalIndex)}
+                      hover
+                      role="checkbox"
+                      tabIndex={-1}
+                      key={index}
+                    >
+                      {columns.map((column) => {
+                        const value = row[column.id].toString();
+                        return (
+                          <TableCell key={column.id} align={column.align}>
+                            {column.format && typeof value === "number"
+                              ? column.format(value)
+                              : value}
+                          </TableCell>
+                        );
+                      })}
+                    </TableRow>
+                  );
+                })}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        <TablePagination
+          rowsPerPageOptions={[10, 25, 100]}
+          component="div"
+          count={servers.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
+      </Paper>
+    </div>
   );
 };
 

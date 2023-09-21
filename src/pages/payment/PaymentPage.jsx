@@ -1,15 +1,12 @@
-import PaymentForm from '../../components/checkout/PaymentForm';
-import './PaymentPage.css';
- 
- function PaymentPage() {
+import PaymentForm from "../../components/checkout/PaymentForm";
+import "./PaymentPage.css";
+
+function PaymentPage() {
   return (
     <div className="payement-page">
-      <PaymentForm/>
+      <PaymentForm />
     </div>
   );
 }
 
-
-
 export default PaymentPage;
- 

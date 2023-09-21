@@ -70,7 +70,7 @@ const MovieCard = (props) => {
           active: active,
           releaseDate: releaseDate,
         },
-        { withCredentials: true }   
+        { withCredentials: true }
       )
       .then((response) => {
         handleClose();
@@ -109,6 +109,7 @@ const MovieCard = (props) => {
         <DialogContent>
           <TextField
             autoFocus
+            focused={true}
             margin="dense"
             label="Title"
             type="text"
@@ -119,7 +120,6 @@ const MovieCard = (props) => {
           />
 
           <TextField
-            autoFocus
             margin="dense"
             label="Description"
             type="text"
@@ -130,7 +130,6 @@ const MovieCard = (props) => {
           />
 
           <TextField
-            autoFocus
             margin="dense"
             label="URL"
             type="text"
@@ -142,7 +141,6 @@ const MovieCard = (props) => {
           />
 
           <TextField
-            autoFocus
             margin="dense"
             label="Box Art URL"
             type="text"
