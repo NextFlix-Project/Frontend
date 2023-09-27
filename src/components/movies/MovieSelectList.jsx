@@ -12,6 +12,7 @@ import Rating from "@mui/material/Rating";
 import Stack from "@mui/material/Stack";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useMediaQuery } from "@mui/material";
+import './MovieSelectList.css';
 
 const MovieSelectList = () => {
   const [movies, setMovies] = useState({
@@ -188,13 +189,14 @@ const MovieSelectList = () => {
 
   return (
     <ImageList
-      sx={{ width: "100%", height: "100%" }}
+      sx={{ width: "100%", height: "100%", overflow:'visible'}}
       cols={matches ? 3 : 2}
       gap={20}
     >
       {movies.movies.map((movie, index) => {
         return (
           <ImageListItem
+          className="movie"
             key={index}
             onClick={(e) => handleMovieClicked(e, index)}
             onMouseOver={(e) => toggleFade(e, index, true)}
@@ -226,16 +228,10 @@ const MovieSelectList = () => {
                 alignContent: "center",
               }}
             >
-              <ImageListItemBar
-                title={movie.title}
-                position="below"
-                sx={{
-                  backgroundColor: "black",
-                  marginTop: "5px",
-                  marginLeft: "10px",
-                  maxWidth: "50%",
-                }}
-              />
+              <div style={{fontSize:'1.5rem', paddingLeft:'15px'}}>
+                {movie.title}
+              </div>
+          
               <Stack
                 spacing={1}
                 sx={{

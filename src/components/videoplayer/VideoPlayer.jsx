@@ -12,7 +12,6 @@ const VideoPlayer = (props) => {
       player.updateSettings({
         debug: { logLevel: dashjs.Debug.LOG_LEVEL_DEBUG },
       });
-
       try {
         player.initialize(videoRef.current, props.movie.url, true);
       } catch (e) {

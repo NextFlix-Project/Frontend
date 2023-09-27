@@ -1,0 +1,6 @@
+.movie:hover {
+    transform: scale(1.05);
+    transition-duration: 0.5s;
+    z-index: 100;
+ 
+}

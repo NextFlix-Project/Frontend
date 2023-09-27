@@ -209,16 +209,10 @@ const WatchList = forwardRef((props, ref) => {
                   alignContent: "center",
                 }}
               >
-                <ImageListItemBar
-                  title={movie.movie.title}
-                  position="below"
-                  sx={{
-                    backgroundColor: "black",
-                    marginTop: "5px",
-                    marginLeft: "10px",
-                    maxWidth: "50%",
-                  }}
-                />
+          <div style={{fontSize:'1.5rem', paddingLeft:'15px'}}>
+                {movie.movie.title}
+              </div>
+          
                 <Stack
                   spacing={1}
                   sx={{
@@ -286,17 +280,19 @@ const WatchList = forwardRef((props, ref) => {
           width="100%"
           marginTop="10px"
           textAlign="center"
+          sx={{fontSize:"3rem", fontWeight:'bold'}}
         >
           Watch List
         </Typography>
         <IconButton
           aria-label="delete"
           size="large"
+          sx={{  height: '75px', width: '75px'}}
           onClick={(e) => {
             props.close(e, false);
           }}
         >
-          <CloseIcon fontSize="inherit" />
+          <CloseIcon fontSize="large"/>
         </IconButton>
       </div>
       {renderWatchList()}

@@ -83,7 +83,9 @@ const NavBar = (props) => {
             >
               NextFlix
             </Typography>
+         
             <div style={{ display: "flex", flexDirection: "row" }}>
+            {auth && (
               <Typography
                 onClick={(e) => {
                   watchListClicked(e, true);
@@ -94,11 +96,12 @@ const NavBar = (props) => {
                   flexGrow: 1,
                   textAlign: "right",
                   fontWeight: "400",
-                  fontSize: "1em",
+                  fontSize: "1.25rem",
                 }}
               >
                 WatchList
               </Typography>
+            )}
               {auth && auth.role === "ADMIN" && (
                 <Typography
                   onClick={adminClicked}
@@ -109,7 +112,7 @@ const NavBar = (props) => {
                     flexGrow: 1,
                     textAlign: "right",
                     fontWeight: "400",
-                    fontSize: "1em",
+                    fontSize: "1.25rem",
                   }}
                 >
                   Admin
@@ -126,7 +129,7 @@ const NavBar = (props) => {
                   onClick={handleMenu}
                   color="inherit"
                 >
-                  <AccountCircle />
+                  <AccountCircle fontSize='large'/>
                 </IconButton>
 
                 <Menu
@@ -144,7 +147,7 @@ const NavBar = (props) => {
                   open={Boolean(anchorEl)}
                   onClose={handleClose}
                 >
-                  <MenuItem onClick={handleClose}>Profile</MenuItem>
+                
                   <MenuItem onClick={handleLogout}>Logout</MenuItem>
                 </Menu>
               </div>
