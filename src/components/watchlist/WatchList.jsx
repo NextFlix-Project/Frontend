@@ -20,6 +20,7 @@ import Zoom from "@mui/material/Zoom";
 import Rating from "@mui/material/Rating";
 import Stack from "@mui/material/Stack";
 import { useMediaQuery } from "@mui/material";
+import './WatchList.css';
 
 const WatchList = forwardRef((props, ref) => {
   const [movies, setMovies] = useState({
@@ -177,6 +178,7 @@ const WatchList = forwardRef((props, ref) => {
         {movies.data.watchlist.map((movie, index) => {
           return (
             <ImageListItem
+              className="movie"
               key={index}
               onClick={(e) => handleMovieClicked(e, index)}
               onMouseOver={(e) => toggleFade(e, index, true)}
