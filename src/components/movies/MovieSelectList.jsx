@@ -275,8 +275,7 @@ const MovieSelectList = () => {
                       zIndex: 5,
                     }}
                   >
-                    {console.log(movie.id, watchList)}
-                    {watchList.has(movie.id) ? <DeleteIcon /> : <AddIcon />}
+                     {watchList.has(movie.id) ? <DeleteIcon /> : <AddIcon />}
                   </Fab>
                 </Zoom>
                 <Zoom

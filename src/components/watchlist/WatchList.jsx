@@ -53,8 +53,7 @@ const WatchList = forwardRef((props, ref) => {
         withCredentials: true,
       })
       .then((response) => {
-        console.log(response.data);
-
+ 
         const data = {
           movies: response.data.movies,
           watchlist:
@@ -267,6 +266,8 @@ const WatchList = forwardRef((props, ref) => {
   };
   return (
     <SwipeableDrawer
+      onOpen={() => {}}
+      onClose={() => {}}
       open={props.opened}
       sx={{
         width: "100%",

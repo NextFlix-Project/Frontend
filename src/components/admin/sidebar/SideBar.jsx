@@ -40,7 +40,7 @@ export default function SideBar() {
         }}
       >
         <div></div>
-        <div>Movies</div>
+        <div style={{fontSize:'2rem', fontWeight:'bold'}}>Movies</div>
         <IconButton aria-label="add" onClick={addMovieClicked}>
           <AddIcon />
         </IconButton>
@@ -68,7 +68,7 @@ export default function SideBar() {
         }}
       >
         <div></div>
-        <div>User</div>
+        <div style={{fontSize:'2rem', fontWeight:'bold'}}>Users</div>
         <div style={{ width: "40px", height: "40px" }}></div>
       </div>
     );
@@ -86,7 +86,7 @@ export default function SideBar() {
         }}
       >
         <div></div>
-        <div>Server</div>
+        <div style={{fontSize:'2rem', fontWeight:'bold'}}>Servers</div>
         <div style={{ width: "40px", height: "40px" }}></div>
       </div>
     );

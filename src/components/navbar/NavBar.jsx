@@ -22,6 +22,7 @@ const NavBar = (props) => {
   const [watchListOpened, setWatchListOpened] = useState(false);
   const watchListRef = useRef(null);
 
+  
   const handleChange = (event) => {
     setAuth(event.target.checked);
   };
@@ -75,16 +76,20 @@ const NavBar = (props) => {
               variant="h6"
               component="div"
               sx={{
-                flexGrow: 1,
+                flexGrow: 0,
                 textAlign: "left",
-                fontWeight: "800",
-                fontSize: "2em",
+                fontWeight: "bold",
+                fontSize: "2.5em",
+                color:'red',
+                cursor:'pointer',
+                
+
               }}
             >
               NextFlix
             </Typography>
          
-            <div style={{ display: "flex", flexDirection: "row" }}>
+            <div style={{ display: "flex", flexDirection: "row", alignItems:'center' }}>
             {auth && (
               <Typography
                 onClick={(e) => {
@@ -93,10 +98,11 @@ const NavBar = (props) => {
                 variant="h6"
                 component="div"
                 sx={{
-                  flexGrow: 1,
+                  flexGrow: 0,
                   textAlign: "right",
                   fontWeight: "400",
                   fontSize: "1.25rem",
+                  cursor: 'pointer'
                 }}
               >
                 WatchList
@@ -109,16 +115,17 @@ const NavBar = (props) => {
                   component="div"
                   sx={{
                     marginLeft: "20px",
-                    flexGrow: 1,
+                    flexGrow: 0,
                     textAlign: "right",
                     fontWeight: "400",
                     fontSize: "1.25rem",
+                    cursor: 'pointer'
                   }}
                 >
                   Admin
                 </Typography>
               )}
-            </div>
+          
             {auth && (
               <div>
                 <IconButton
@@ -136,7 +143,7 @@ const NavBar = (props) => {
                   id="menu-appbar"
                   anchorEl={anchorEl}
                   anchorOrigin={{
-                    vertical: "top",
+                    vertical: "bottom",
                     horizontal: "right",
                   }}
                   keepMounted
@@ -151,7 +158,9 @@ const NavBar = (props) => {
                   <MenuItem onClick={handleLogout}>Logout</MenuItem>
                 </Menu>
               </div>
+              
             )}
+              </div>
           </Toolbar>
         </AppBar>
         <WatchList

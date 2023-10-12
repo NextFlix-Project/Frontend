@@ -42,7 +42,7 @@ function VideoPage() {
           marginTop: "0px",
           top: "50%",
           left: "50%",
-
+       
           transform: "translate(-50%,-50%)",
         }}
       >
@@ -61,9 +61,9 @@ function VideoPage() {
         >
           <VideoPlayer movie={movie} />
 
-          <div>
-            <div>{movie.title} </div>
-            <div>{movie.description} </div>
+          <div style={{backgroundColor:'black', transform:'translate(0, -10px)', padding:0, margin:0}}>
+            <div style={{fontSize: '2rem', fontWeight:'bold'}}>{movie.title} </div>
+            <div style={{fontSize: '1.5rem'}}>{movie.description} </div>
           </div>
         </div>
       </div>

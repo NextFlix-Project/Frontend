@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, StrictMode } from "react";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
@@ -20,12 +20,14 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   return (
-    <ThemeProvider theme={darkTheme}>
-      <CssBaseline />
-      <RouterProvider router={router}>
-        <div className="main"></div>
-      </RouterProvider>
-    </ThemeProvider>
+    <StrictMode>
+      <ThemeProvider theme={darkTheme}>
+        <CssBaseline />
+        <RouterProvider router={router}>
+          <div className="main"></div>
+        </RouterProvider>
+      </ThemeProvider>
+    </StrictMode>
   );
 }
 

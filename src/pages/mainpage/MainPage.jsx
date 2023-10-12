@@ -15,8 +15,7 @@ function MainPage() {
         withCredentials: true,
       })
       .then((response) => {
-        console.log(response);
-        if (response.data !== true) navigate("/subscribe");
+         if (response.data !== true) navigate("/subscribe");
 
         setSubscribed(response.data);
       })
